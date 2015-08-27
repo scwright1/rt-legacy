@@ -1,0 +1,36 @@
+findcpu(){
+	grep 'model name' /proc/cpuinfo  | uniq | awk -F':' '{ print $2}'
+}
+ 
+findkernelversion(){
+	uname -mrs
+}
+ 
+totalmem(){
+	grep -i 'memtotal' /proc/meminfo | awk -F':' '{ print $2}'
+}
+
+mem=$(cat /proc/meminfo | grep MemTotal | head -n 1 | awk '/[0-9]/ {print $2}')
+
+
+echo "              .,-:;//;:=,               `tput smso`  Terminal Info        `tput rmso`
+          . :H@@@MM@M#H/.,+%;,        
+       ,/X+ +M@@M@MM%=,-%HMMM@X/,        $(findcpu)
+     -+@MM; SM@@MH+-,;XMMMM@MMMM@+-       `tput bold`RAM memory:`tput sgr0` $[$mem/1024] MB
+    ;@M@@M- XM@X;. -+XXXXXHHH@M@M#@/.     `tput bold`Kernel:`tput sgr0` $(findkernelversion) 
+  ,%MM@@MH ,@%=            .---=-=:=,.    
+  =@#@@@MX .,              -%HXSS%%%+;    `tput smso`  Date and Time                         `tput rmso`
+ =-./@M@MS                  .;@MMMM@MM:   `tput bold`Date:`tput sgr0` $(date +"%A %d %B %Y")
+ X@/ -SMM/                    .+MM@@@MS   `tput bold`Time:`tput sgr0` $(date +"%T")
+,@M@H: :@:                    . =X#@@@@- 
+,@@@MMX, .                    /H- ;@M@M= 
+.H@@@@M@+,                    %MM+..%#S. 
+ /MMMM@MMH/.                  XM@MH; =; 
+  /%+%SXHH@S=              , .H@@@@MX, 
+   .=--------.           -%H.,@@@@@MX,    
+    .%MM@@@HHHXXSSS%+- .:MMX =M@@MM%.                               
+     =XMMM@MM@MM#H;,-+HMM@M+ /MMMX=     
+       =%@M@M#@S-.=S@MM@@@M; %M%=     
+         ':+S+-,/H#MMMMMMM@= ='           
+               =++%%%%+/:-.               
+"
